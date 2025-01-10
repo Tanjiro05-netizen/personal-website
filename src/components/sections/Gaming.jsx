@@ -1,5 +1,5 @@
 import React, { forwardRef, useState } from 'react';
-import { Gamepad2, Sword, Shield, Trophy, Maximize2, Minimize2 } from 'lucide-react';
+import { Gamepad2, Shield, Trophy, Maximize2, Minimize2 } from 'lucide-react';
 import gamingData from '../../data/gaming';
 import WeaponUsageChart from '../common/WeaponUsageChart';
 

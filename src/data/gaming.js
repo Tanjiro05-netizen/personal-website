@@ -1,5 +1,5 @@
 // src/data/gaming.js
-import { Gamepad2, Sword, Shield, Trophy } from 'lucide-react';
+import { Gamepad2, Sword} from 'lucide-react';
 import gamingVideos from './gaming-videos';
 
 const gaming = [
