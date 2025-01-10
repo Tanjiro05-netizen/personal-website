@@ -1,5 +1,4 @@
 import React, { forwardRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
 
 const Contact = forwardRef((props, ref) => {
     const [formData, setFormData] = useState({
@@ -14,21 +13,20 @@ const Contact = forwardRef((props, ref) => {
         setStatus('sending');
 
         try {
-            await emailjs.send(
-                process.env.REACT_APP_EMAILJS_SERVICE_ID,  // From EmailJS dashboard
-                process.env.REACT_APP_EMAILJS_TEMPLATE_ID, // From EmailJS dashboard
-                {
-                    from_name: formData.name,
-                    reply_to: formData.email,
-                    message: formData.message,
-                    to_name: 'Anon',         // Replace with your actual name
-                    to_email: 'CrackedSlayer26@gmail.com'   // Replace with your actual email
+            const response = await fetch('/api/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-                process.env.REACT_APP_EMAILJS_PUBLIC_KEY  // From EmailJS dashboard
-            );
+                body: JSON.stringify(formData),
+            });
 
-            setStatus('success');
-            setFormData({ name: '', email: '', message: '' });
+            if (response.ok) {
+                setStatus('success');
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                setStatus('error');
+            }
         } catch (error) {
             setStatus('error');
             console.error('Failed to send email:', error);
