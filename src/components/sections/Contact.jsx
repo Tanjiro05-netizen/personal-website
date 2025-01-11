@@ -14,7 +14,7 @@ const Contact = forwardRef((props, ref) => {
 
         try {
             console.log('Sending request:', formData); // Debugging
-            const response = await fetch('/api/sendEmail', {
+            const response = await fetch('/api/sendEmail.js', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
