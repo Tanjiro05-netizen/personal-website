@@ -5,6 +5,10 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "build" }
+    },
+    {
+      "src": "api/sendEmail.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -17,6 +21,10 @@
     { "src": "/asset-manifest.json", "dest": "/asset-manifest.json" },
     { "src": "/manifest.json", "dest": "/manifest.json" },
     { "src": "/precache-manifest.(.*)", "dest": "/precache-manifest.$1" },
+    {
+      "src": "/api/sendEmail",
+      "dest": "api/sendEmail.js"
+    },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
