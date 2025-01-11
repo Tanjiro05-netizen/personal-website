@@ -4,7 +4,7 @@ const Contact = forwardRef((props, ref) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        message: ''
+        message: '',
     });
     const [status, setStatus] = useState('');
 
@@ -13,17 +13,19 @@ const Contact = forwardRef((props, ref) => {
         setStatus('sending');
 
         try {
-            const response = await fetch('/api/sendEmail', {
+            console.log('Sending request:', formData); // Debugging
+            const response = await fetch('http://localhost:3001/api/sendEmail', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             });
+            console.log('Response:', response); // Debugging
 
             if (response.ok) {
                 setStatus('success');
-                setFormData({ name: '', email: '', message: '' });
+                setFormData({ name: '', email: '', message: '' }); // Clear the form
             } else {
                 setStatus('error');
             }
@@ -34,9 +36,9 @@ const Contact = forwardRef((props, ref) => {
     };
 
     const handleChange = (e) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
             ...prev,
-            [e.target.id]: e.target.value
+            [e.target.id]: e.target.value,
         }));
     };
 
