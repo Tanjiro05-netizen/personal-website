@@ -1,27 +1,24 @@
-import axios from 'axios';
+const axios = require('axios').default;
 
-export default async function handler(req, res) {
-    console.log('Starting handler...'); // Debugging
+module.exports = async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
 
-    // Log environment variables (remove sensitive values in production)
-    console.log('Environment Variables:', {
-        EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID,
-        EMAILJS_PUBLIC_KEY: process.env.EMAILJS_PUBLIC_KEY,
-        EMAILJS_PRIVATE_KEY: process.env.EMAILJS_PRIVATE_KEY,
-    });
+    const { name, email, message } = req.body;
 
-    if (req.method === 'POST') {
-        const { name, email, message } = req.body;
-
-        console.log('Received request payload:', { name, email, message }); // Debugging
-
-        try {
-            const response = await axios.post('https://api.emailjs.com/api/v1.0/email/send', {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'https://api.emailjs.com/api/v1.0/email/send',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: {
                 service_id: process.env.EMAILJS_SERVICE_ID,
                 template_id: process.env.EMAILJS_TEMPLATE_ID,
                 user_id: process.env.EMAILJS_PUBLIC_KEY,
-                accessToken: process.env.EMAILJS_PRIVATE_KEY, // Add the private key here
+                accessToken: process.env.EMAILJS_PRIVATE_KEY,
                 template_params: {
                     from_name: name,
                     reply_to: email,
@@ -29,15 +26,15 @@ export default async function handler(req, res) {
                     to_name: 'Anon',
                     to_email: 'CrackedSlayer26@gmail.com',
                 },
-            });
+            },
+        });
 
-            console.log('EmailJS response:', response.data); // Debugging
-            res.status(200).json({ success: true });
-        } catch (error) {
-            console.error('Error sending email:', error.response?.data || error.message || error);
-            res.status(500).json({ error: 'Failed to send email' });
-        }
-    } else {
-        res.status(405).json({ error: 'Method not allowed' });
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        console.error('EmailJS Error:', error.response?.data || error.message);
+        return res.status(500).json({
+            error: 'Failed to send email',
+            details: error.message
+        });
     }
 }
