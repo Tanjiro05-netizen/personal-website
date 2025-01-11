@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     console.log('Starting handler...'); // Debugging
 
     // Log environment variables (remove sensitive values in production)
-    console.log('Environment Variables in sendEmail.js:', {
+    console.log('Environment Variables:', {
         EMAILJS_SERVICE_ID: process.env.EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID: process.env.EMAILJS_TEMPLATE_ID,
         EMAILJS_PUBLIC_KEY: process.env.EMAILJS_PUBLIC_KEY,
